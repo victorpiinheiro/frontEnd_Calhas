@@ -1,27 +1,41 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { FaEdit, FaTrash } from 'react-icons/fa';
+import { toast } from 'react-toastify';
+import { Link } from 'react-router-dom';
+
+import axios from '../../services/axios';
 import { Container } from '../../styles/GlobalStyles';
-import { Table } from './styled';
+import { Table, NewCliente } from './styled';
 
 export default function Clientes() {
-  const clientes = [
-    {
-      name: 'Victor pinheiro ',
-      email: 'teste@gmail.com',
-      phone: '11932125861',
-      address: 'rua A jewbfjew bfewjbf fbewjf 121',
-    },
-    {
-      name: 'Jose preira de lima Filho ',
-      email: 'testeewjfuef@gmail.com',
-      phone: '11932125861',
-      address: 'rua A ddddd bfewjbf fbewjf 121',
-    },
-  ];
+  const [clientes, setClientes] = useState([]);
+
+  async function getClientes() {
+    const response = await axios.get('/clientes');
+    setClientes(response.data);
+  }
+
+  async function handleDelete(id) {
+    try {
+      await axios.delete(`/clientes/${id}`);
+
+      toast.success('Usuario excluido com sucesso');
+    } catch (error) {
+      console.log(id);
+      console.log(error);
+    }
+  }
+
+  useEffect(() => {
+    getClientes();
+  }, []);
 
   return (
     <Container>
       <h1>Clientes</h1>
+      <NewCliente>
+        <Link to="/clientes/cadastrar">Cadastrar novo cliente</Link>
+      </NewCliente>
 
       <Table>
         <thead>
@@ -39,17 +53,18 @@ export default function Clientes() {
           {clientes.map((cliente) => (
             <tr key={cliente.id}>
               <td>{cliente.name}</td>
-              <td>{cliente.address}</td>
+              <td>{cliente.adress}</td>
               <td>{cliente.phone}</td>
+
               <td>{cliente.email}</td>
               <td>
-                <button type="button">
+                <Link to={`/clientes/edit/${cliente.id}`}>
                   <FaEdit />
-                </button>
+                </Link>
               </td>
               <td>
                 <button type="button">
-                  <FaTrash />
+                  <FaTrash onClick={() => handleDelete(cliente.id)} />
                 </button>
               </td>
             </tr>
