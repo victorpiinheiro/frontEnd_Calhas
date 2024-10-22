@@ -20,6 +20,7 @@ export default function Clientes() {
       await axios.delete(`/clientes/${id}`);
 
       toast.success('Usuario excluido com sucesso');
+      getClientes();
     } catch (error) {
       console.log(id);
       console.log(error);
