@@ -49,7 +49,7 @@ export default createGlobalStyle`
 `;
 
 export const Container = styled.section`
-  max-width: 900px;
+  max-width: 950px;
   min-width: 600px;
   min-height: 500px;
   background: #fff;

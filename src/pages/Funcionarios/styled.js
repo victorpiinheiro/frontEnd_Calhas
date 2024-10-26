@@ -13,7 +13,7 @@ export const Table = styled.table`
   th {
     gap: initial;
     padding: 10px 20px;
-    text-align: left;
+    text-align: center;
     font-weight: bold;
     font-size: 15px;
     text-transform: uppercase;

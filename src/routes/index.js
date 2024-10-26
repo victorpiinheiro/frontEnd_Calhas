@@ -19,6 +19,11 @@ export default function Routes() {
       <MyRoute exact path="/clientes/cadastrar" component={FormCliente} />
 
       <MyRoute exact path="/funcionarios" component={Funcionarios} />
+      <MyRoute
+        exact
+        path="/funcionarios/cadastrar"
+        component={FormFuncionario}
+      />
       <MyRoute path="*" component={Page404} />
     </Switch>
   );
