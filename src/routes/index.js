@@ -6,6 +6,7 @@ import Login from '../pages/Login';
 import Page404 from '../pages/Page404';
 import Funcionarios from '../pages/Funcionarios';
 import Clientes from '../pages/Clientes';
+import Pedidos from '../pages/Orders';
 import FormCliente from '../pages/Clientes/form/FormCliente';
 import FormFuncionario from '../pages/Funcionarios/forms';
 
@@ -29,6 +30,7 @@ export default function Routes() {
         path="/funcionarios/cadastrar"
         component={FormFuncionario}
       />
+      <MyRoute exact path="/pedidos" component={Pedidos} isClosed />
 
       <MyRoute path="*" component={Page404} />
     </Switch>

@@ -31,6 +31,9 @@ export default function Header() {
         </>
       ) : (
         <>
+          <Link to="/pedidos">
+            <FaHome size={24} />
+          </Link>
           <Link to="/">
             <FaHome size={24} />
           </Link>
