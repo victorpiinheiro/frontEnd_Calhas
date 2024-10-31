@@ -1,10 +1,15 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
+import { useParams, useHistory } from 'react-router-dom';
+
+import { toast } from 'react-toastify';
 
 import { Form } from './styled';
 import { Container } from '../../../styles/GlobalStyles';
 import axios from '../../../services/axios';
 
 export default function FormFuncionarios() {
+  const history = useHistory();
+  const { id } = useParams();
   const [formData, setFormData] = useState({
     name: '',
     position: '',
@@ -30,17 +35,54 @@ export default function FormFuncionarios() {
 
   async function handleSubmit(e) {
     e.preventDefault();
-    try {
-      const response = await axios.post('/funcionarios/cadastrar', formData);
-      console.log(response.data);
-    } catch (error) {
-      console.log(error);
+
+    if (id) {
+      try {
+        await axios.put(`/funcionarios/edit/${id}`, formData);
+        toast.success('Funcionario editado com sucesso');
+
+        history.push('/funcionarios');
+
+        console.log('Dados cadastrados:', formData);
+      } catch (err) {
+        toast.error('error as editar funcionario');
+      }
+    } else {
+      try {
+        const response = await axios.post('/funcionarios/cadastrar', formData);
+        console.log(response.data);
+      } catch (error) {
+        console.log(error);
+      }
     }
   }
+  function formatDate(dateString) {
+    if (!dateString) return '';
+    return dateString.split('T')[0];
+  }
+
+  async function loadingFuncionarios() {
+    const { data } = await axios.get(`/funcionarios/${id}`);
+    if (!data) return;
+    setFormData({
+      ...data.user,
+      hireDate: formatDate(data.user.hireDate) || '',
+      data_nascimento: formatDate(data.user.data_nascimento) || '',
+      data_demissao: formatDate(data.user.data_demissao) || '',
+      email: data.user.email || '',
+      observacoes: data.user.observacoes || '',
+    });
+  }
+
+  useEffect(() => {
+    if (id) {
+      loadingFuncionarios();
+    }
+  }, [id]);
 
   return (
     <Container>
-      <h1>Cadastrar funcionario</h1>
+      <h1>{id ? 'Editar Funcionario' : 'Cadastrar Funcionario'}</h1>
 
       <Form onSubmit={handleSubmit}>
         <label htmlFor="name">
@@ -152,7 +194,7 @@ export default function FormFuncionarios() {
           />
         </label>
 
-        <button type="submit">Cadastrar</button>
+        <button type="submit"> {id ? 'Editar' : 'Cadastrar'}</button>
       </Form>
     </Container>
   );

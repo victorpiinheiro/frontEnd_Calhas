@@ -27,6 +27,22 @@ export const Table = styled.table`
     justify-content: center;
     text-align: center;
   }
+
+  button {
+    background: transparent;
+    align-items: center;
+    justify-content: center;
+    color: ${colors.primaryColor};
+    font-size: 20px;
+  }
+  a {
+    display: flex;
+    background: transparent;
+    align-items: center;
+    justify-content: center;
+    color: ${colors.primaryColor};
+    font-size: 20px;
+  }
 `;
 
 export const NovoFuncionario = styled.div`

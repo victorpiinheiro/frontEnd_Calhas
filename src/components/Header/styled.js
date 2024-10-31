@@ -1,6 +1,16 @@
 import styled from 'styled-components';
 import { primaryColor } from '../../config/colors';
 
+export const Card = styled.div`
+  justify-content: space-between;
+  width: 100%;
+  color: #fff;
+  text-transform: uppercase;
+  font-weight: bold;
+  letter-spacing: 2px;
+  font-size: 18px;
+`;
+
 export const Nav = styled.nav`
   background: ${primaryColor};
   padding: 20px;

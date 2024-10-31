@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { FaEdit, FaTrash } from 'react-icons/fa';
 
+import { toast } from 'react-toastify';
 import { Container } from '../../styles/GlobalStyles';
 import { NovoFuncionario, Table } from './styled';
 import axios from '../../services/axios';
@@ -12,10 +13,20 @@ export default function Funcionarios() {
   const getFuncionarios = async () => {
     try {
       const { data } = await axios.get('/funcionarios');
-      console.log(data);
+
       setFuncionarios(data);
     } catch (e) {
-      console.log(e);
+      toast.error('erro ao carregar funcionarios');
+    }
+  };
+
+  const handleDelete = async (id) => {
+    try {
+      await axios.delete(`/funcionarios/${id}`);
+      toast.success('Funcionario deletado com sucesso');
+      getFuncionarios();
+    } catch (err) {
+      toast.error('erro ao deletar funcionario');
     }
   };
 
@@ -59,12 +70,14 @@ export default function Funcionarios() {
               <td>{formatarData(func.hireDate)}</td>
 
               <td>
-                <Link to="funcionario/editar" />
-                <FaEdit />
+                <Link to={`/funcionarios/edit/${func.id}`}>
+                  <FaEdit />
+                </Link>
               </td>
               <td>
-                <Link to="funcionario/editar" />
-                <FaTrash />
+                <button type="button">
+                  <FaTrash onClick={() => handleDelete(func.id)} />
+                </button>
               </td>
             </tr>
           ))}
