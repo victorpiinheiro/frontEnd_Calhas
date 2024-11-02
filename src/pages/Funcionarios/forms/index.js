@@ -78,6 +78,7 @@ export default function FormFuncionarios() {
     if (id) {
       loadingFuncionarios();
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [id]);
 
   return (

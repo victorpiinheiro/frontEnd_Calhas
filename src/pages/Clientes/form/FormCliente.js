@@ -13,6 +13,7 @@ export default function FormCliente() {
   const [adress, setAdress] = useState('');
   const [phone, setPhone] = useState('');
   const [email, setEmail] = useState('');
+  const [cpf, setCpf] = useState('');
 
   async function loadClient() {
     try {
@@ -21,6 +22,7 @@ export default function FormCliente() {
       setAdress(data.user.adress);
       setPhone(data.user.phone);
       setEmail(data.user.email);
+      setCpf(data.user.cpf);
     } catch (err) {
       console.log(err);
     }
@@ -30,6 +32,7 @@ export default function FormCliente() {
     if (id) {
       loadClient();
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [id]);
 
   async function handleSubmit(e) {
@@ -42,6 +45,7 @@ export default function FormCliente() {
           phone,
           adress,
           email,
+          cpf,
         });
         toast.success('Cliente editado com sucesso');
         history.push('/clientes');
@@ -55,6 +59,7 @@ export default function FormCliente() {
           adress,
           phone,
           email,
+          cpf,
         });
         toast.success('Usuario cadastrado com sucesso');
         history.push('/clientes');
@@ -76,6 +81,15 @@ export default function FormCliente() {
             value={name}
             onChange={(e) => setName(e.target.value)}
             placeholder="Digite Nome"
+          />
+        </label>
+        <label htmlFor="name">
+          CPF:
+          <input
+            type="text"
+            value={cpf}
+            onChange={(e) => setCpf(e.target.value)}
+            placeholder="Digite O CPF"
           />
         </label>
         <label htmlFor="adress">

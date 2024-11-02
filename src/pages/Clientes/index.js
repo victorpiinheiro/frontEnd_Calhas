@@ -42,6 +42,7 @@ export default function Clientes() {
         <thead>
           <tr>
             <th>Nome</th>
+            <th>CPF</th>
             <th>Endereço</th>
             <th>telefone</th>
             <th>email</th>
@@ -54,6 +55,7 @@ export default function Clientes() {
           {clientes.map((cliente) => (
             <tr key={cliente.id}>
               <td>{cliente.name}</td>
+              <td>{cliente.cpf}</td>
               <td>{cliente.adress}</td>
               <td>{cliente.phone}</td>
 

@@ -9,6 +9,7 @@ import Clientes from '../pages/Clientes';
 import Pedidos from '../pages/Orders';
 import FormCliente from '../pages/Clientes/form/FormCliente';
 import FormFuncionario from '../pages/Funcionarios/forms';
+import FormPedido from '../pages/Orders/form';
 
 export default function Routes() {
   return (
@@ -31,6 +32,12 @@ export default function Routes() {
         component={FormFuncionario}
       />
       <MyRoute exact path="/pedidos" component={Pedidos} isClosed />
+      <MyRoute
+        exact
+        path="/pedidos/cadastrar"
+        component={FormPedido}
+        isClosed
+      />
 
       <MyRoute path="*" component={Page404} />
     </Switch>

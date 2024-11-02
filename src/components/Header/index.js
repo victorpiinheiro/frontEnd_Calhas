@@ -17,8 +17,8 @@ export default function Header() {
 
   function logout() {
     localStorage.removeItem('token');
-    toast.warning('Voce saiu do sistema');
     window.location.reload();
+    toast.warning('Voce saiu do sistema');
   }
   return (
     <Nav>

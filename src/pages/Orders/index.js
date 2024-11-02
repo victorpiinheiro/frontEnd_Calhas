@@ -31,14 +31,15 @@ export default function Orders() {
   }
 
   useEffect(() => {
-    getPedidos();
+    if (pedidos.length > 0) getPedidos();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (
     <Container>
       <h1>Pedidos</h1>
       <BotaoNovoPedido>
-        <Link to="/orders/cadastrar">Cadastrar Novo pedido</Link>
+        <Link to="/pedidos/cadastrar">Cadastrar Novo pedido</Link>
       </BotaoNovoPedido>
 
       <Table>
