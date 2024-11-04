@@ -9,21 +9,24 @@ import {
 
 import { Link } from 'react-router-dom';
 
-import { toast } from 'react-toastify';
+import { useDispatch, useSelector } from 'react-redux';
 import { Nav, Card } from './styled';
 
-export default function Header() {
-  const token = localStorage.getItem('token');
+import { logout } from '../../store/modules/User/actions';
 
-  function logout() {
+export default function Header() {
+  const user = useSelector((state) => state.user.currentUser);
+  const dispath = useDispatch();
+
+  function handleLogout() {
+    dispath(logout());
     localStorage.removeItem('token');
-    window.location.reload();
-    toast.warning('Voce saiu do sistema');
+    localStorage.removeItem('User');
   }
   return (
     <Nav>
       <Card>Calhas Rafael</Card>
-      {!token ? (
+      {!user ? (
         <>
           <Link to="/login">
             <FaUser size={24} />
@@ -44,7 +47,7 @@ export default function Header() {
             <FaUsers size={24} />
           </Link>
           <Link to="/login">
-            <FaSignInAlt size={24} onClick={logout} />
+            <FaSignInAlt size={24} onClick={handleLogout} />
           </Link>
         </>
       )}

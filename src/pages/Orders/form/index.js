@@ -16,17 +16,21 @@ export default function FormPedido() {
   const [description, setDescription] = useState('');
   const [status, setStatus] = useState('');
 
-  async function handleChangeCpf(e) {
+  async function handleChangeCpf() {
     try {
-      const { data } = await axios.get('/clientes');
-      if (!data) {
-        toast.error('Nenhum cliente encontrado');
-      }
+      if (cpf.length === 11) {
+        const { data } = await axios.get('/clientes');
+        if (!data) {
+          toast.error('Nenhum cliente encontrado');
+        }
 
-      const resultado = data.filter((clienteCpf) => clienteCpf.cpf === cpf);
-      if (resultado.length > 0) {
-        setCliente(resultado[0].name);
-        setClienteId(resultado[0].id);
+        const resultado = data.filter((clienteCpf) => clienteCpf.cpf === cpf);
+        console.log(resultado);
+
+        if (resultado.length > 0) {
+          setCliente(resultado[0].name);
+          setClienteId(resultado[0].id);
+        }
       } else {
         setCliente('');
         setClienteId('');

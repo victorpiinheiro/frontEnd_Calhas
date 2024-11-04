@@ -2,10 +2,15 @@ import React, { useState } from 'react';
 
 import { toast } from 'react-toastify';
 import { useHistory } from 'react-router-dom';
+
+import { useDispatch } from 'react-redux';
 import { Form, Container } from './styled';
 import axios from '../../services/axios';
+import { loginRequest } from '../../store/modules/User/actions';
 
 export default function Login() {
+  const dispath = useDispatch();
+
   const history = useHistory();
   const [formValues, setFormValue] = useState({
     email: '',
@@ -27,7 +32,11 @@ export default function Login() {
     try {
       const { data } = await axios.post('/tokens', formValues);
       localStorage.setItem('token', data.token);
-      history.push('/funcionarios');
+      localStorage.setItem('User', formValues.email);
+
+      dispath(loginRequest({ email: formValues.email }));
+      history.push('/home');
+
       toast.success('Usuario logado com sucesso');
     } catch (err) {
       setFormValue({

@@ -31,8 +31,7 @@ export default function Orders() {
   }
 
   useEffect(() => {
-    if (pedidos.length > 0) getPedidos();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    getPedidos();
   }, []);
 
   return (
