@@ -50,9 +50,9 @@ export default function FormFuncionarios() {
     } else {
       try {
         const response = await axios.post('/funcionarios/cadastrar', formData);
-        console.log(response.data);
+        history.push('/funcionarios');
       } catch (error) {
-        console.log(error);
+        console.log('estou aqui', error.response);
       }
     }
   }
@@ -78,7 +78,6 @@ export default function FormFuncionarios() {
     if (id) {
       loadingFuncionarios();
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [id]);
 
   return (

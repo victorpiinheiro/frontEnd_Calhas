@@ -10,27 +10,30 @@ import axios from '../../services/axios';
 export default function Orders() {
   const [pedidos, setPedidos] = useState([]);
 
-  async function getPedidos() {
-    try {
-      const response = await axios.get('/orders');
-
-      setPedidos(response.data);
-    } catch (err) {
-      toast.error('erro ao carregar os pedidos');
-    }
-  }
-
   async function deletePedido(id) {
     try {
       await axios.delete(`/orders/${id}`);
       toast.success('Pedido excluido com sucesso');
-      getPedidos();
+
+      setPedidos(pedidos.filter((pedido) => pedido.id !== id));
     } catch (err) {
       toast.error('erro ao deletar o pedido');
     }
   }
 
   useEffect(() => {
+    async function getPedidos() {
+      try {
+        const response = await axios.get('/orders');
+        console.log(pedidos);
+        setPedidos(response.data);
+      } catch (err) {
+        console.log(err.response);
+        if (err.response.status === 401) {
+          toast.error(err.response.data.error);
+        }
+      }
+    }
     getPedidos();
   }, []);
 
@@ -63,7 +66,7 @@ export default function Orders() {
               <td>{pedido.status}</td>
               <td>{pedido.price}</td>
               <td>
-                <Link to="/orders/edit">
+                <Link to={`/pedidos/edit/${pedido.id}`}>
                   <FaEdit />
                 </Link>
               </td>

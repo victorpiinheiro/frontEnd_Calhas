@@ -1,22 +1,40 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 import { toast } from 'react-toastify';
-
-import { useHistory } from 'react-router-dom';
+import { useHistory, useParams } from 'react-router-dom';
 import { Container } from '../../../styles/GlobalStyles';
 import { Form } from './styled';
 import axios from '../../../services/axios';
 
 export default function FormPedido() {
   const history = useHistory();
+  const { id } = useParams();
+  const idNumber = Number(id);
 
   const [cpf, setCpf] = useState('');
   const [cliente, setCliente] = useState('');
   const [clienteId, setClienteId] = useState('');
-  const [price, setprice] = useState('');
+  const [price, setPrice] = useState('');
   const [description, setDescription] = useState('');
   const [status, setStatus] = useState('');
 
-  async function handleChangeCpf() {
+  const filtraClientePorId = async (id) => {
+    try {
+      const response = await axios.get('/clientes');
+      console.log(response.data[0]);
+
+      const clientesFiltrados = response.data.filter(
+        (allCliente) => allCliente.id === Number(id)
+      );
+
+      console.log('meu filtro', clientesFiltrados);
+    } catch (err) {
+      console.error('erro ao bsucar clientes:', err);
+    }
+  };
+
+  filtraClientePorId(id);
+
+  const handleChangeCpf = useCallback(async () => {
     try {
       if (cpf.length === 11) {
         const { data } = await axios.get('/clientes');
@@ -36,11 +54,11 @@ export default function FormPedido() {
         setClienteId('');
       }
     } catch (err) {
-      if (!cpf) toast.error('cliente nao cadastrado');
+      if (!cpf) toast.error('Cliente não cadastrado');
     }
-  }
+  }, [cpf]);
 
-  async function handleSubmit(e) {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
     try {
@@ -51,26 +69,25 @@ export default function FormPedido() {
         clienteId,
       });
       history.push('/pedidos');
-      toast.success('pedido cadastrado com sucesso');
+      toast.success('Pedido cadastrado com sucesso');
     } catch (err) {
-      console.log(
-        'erro ao cadastrar pedido',
-        err.response ? err.response.data : err.message
-      );
+      if (!clienteId)
+        toast.error('O pedido deve estar vinculado a algum cliente');
+      console.log('Erro ao cadastrar pedido', err.response);
     }
-  }
+  };
 
   useEffect(() => {
     if (cpf) handleChangeCpf();
-  }, [cpf]);
+  }, [cpf, handleChangeCpf]);
 
   return (
     <Container>
       <h1>Novo pedido</h1>
 
       <Form onSubmit={handleSubmit}>
-        <label htmlFor="cpf">
-          cliente
+        <label htmlFor="cliente">
+          Cliente
           <input
             type="text"
             value={cliente}
@@ -79,7 +96,7 @@ export default function FormPedido() {
           />
         </label>
         <label htmlFor="cpf">
-          Cpf cliente
+          CPF do cliente
           <input
             type="text"
             value={cpf}
@@ -87,7 +104,7 @@ export default function FormPedido() {
           />
         </label>
         <label htmlFor="descricao">
-          descrição:
+          Descrição:
           <input
             type="text"
             value={description}
@@ -100,7 +117,7 @@ export default function FormPedido() {
           <input
             type="text"
             value={price}
-            onChange={(e) => setprice(e.target.value)}
+            onChange={(e) => setPrice(e.target.value)}
           />
         </label>
 

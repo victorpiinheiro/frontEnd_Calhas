@@ -12,11 +12,11 @@ export default function Funcionarios() {
 
   const getFuncionarios = async () => {
     try {
-      const { data } = await axios.get('/funcionarios');
-
-      setFuncionarios(data);
+      const response = await axios.get('/funcionarios');
+      console.log(response);
+      setFuncionarios(response.data);
     } catch (e) {
-      toast.error('erro ao carregar funcionarios');
+      console.log(e.response);
     }
   };
 
@@ -24,6 +24,10 @@ export default function Funcionarios() {
     try {
       await axios.delete(`/funcionarios/${id}`);
       toast.success('Funcionario deletado com sucesso');
+
+      setFuncionarios(
+        funcionarios.filter((funcionario) => funcionario.id !== id)
+      );
       getFuncionarios();
     } catch (err) {
       toast.error('erro ao deletar funcionario');

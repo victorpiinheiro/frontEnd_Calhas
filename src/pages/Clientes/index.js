@@ -11,19 +11,23 @@ export default function Clientes() {
   const [clientes, setClientes] = useState([]);
 
   async function getClientes() {
-    const response = await axios.get('/clientes');
-    setClientes(response.data);
+    try {
+      const response = await axios.get('/clientes');
+      setClientes(response.data);
+      console.log(clientes);
+    } catch (err) {
+      console.log(err.response);
+    }
   }
 
   async function handleDelete(id) {
     try {
       await axios.delete(`/clientes/${id}`);
 
-      toast.success('Usuario excluido com sucesso');
+      toast.success('Cliente excluido com sucesso');
       getClientes();
     } catch (error) {
-      console.log(id);
-      console.log(error);
+      console.log(error.response);
     }
   }
 

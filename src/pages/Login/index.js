@@ -39,10 +39,10 @@ export default function Login() {
 
       toast.success('Usuario logado com sucesso');
     } catch (err) {
-      setFormValue({
-        email: '',
+      setFormValue((prevState) => ({
+        ...prevState,
         password: '',
-      });
+      }));
       toast.error('Usuario ou senha invalidos');
     }
   }
@@ -76,7 +76,7 @@ export default function Login() {
       </Form>
 
       <p>
-        Ainda nao tem cadastro ? <a href="/">Registre-se</a>
+        Ainda nao tem cadastro ? <a href="/register">Registre-se</a>
       </p>
     </Container>
   );
