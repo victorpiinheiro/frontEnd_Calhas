@@ -177,12 +177,15 @@ export default function FormFuncionarios() {
         </label>
         <label htmlFor="status">
           Status:
-          <input
-            type="text"
+          <select
             name="status"
+            id="status"
             value={formData.status}
             onChange={handleChange}
-          />
+          >
+            <option value="ativo">Ativo</option>
+            <option value="inativo">Inativo</option>
+          </select>
         </label>
         <label htmlFor="observacoes">
           Observacoes:

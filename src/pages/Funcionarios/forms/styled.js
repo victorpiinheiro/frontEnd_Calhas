@@ -33,4 +33,21 @@ export const Form = styled.form`
     font-size: 20px;
     text-transform: uppercase;
   }
+  select {
+    margin-top: 5px;
+    height: 35px;
+    border-radius: 4px;
+    border: 1px solid #ccc;
+    padding: 5px;
+    font-size: 20px;
+    background-color: #f9f9f9;
+    color: #807d7d;
+  }
+
+  option {
+    font-size: 20px;
+    padding: 5px;
+    background-color: #f9f9f9;
+    color: #807d7d;
+  }
 `;

@@ -66,7 +66,7 @@ export default function Orders() {
               <td>{pedido.status}</td>
               <td>{pedido.price}</td>
               <td>
-                <Link to={`/pedidos/edit/${pedido.id}`}>
+                <Link to={`/pedidos/edit/${pedido.clienteId}`}>
                   <FaEdit />
                 </Link>
               </td>

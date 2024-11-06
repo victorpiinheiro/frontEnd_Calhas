@@ -1,85 +1,73 @@
-import React, { useEffect, useState, useCallback } from 'react';
+import React, { useEffect, useState } from 'react';
+import { useHistory } from 'react-router-dom/';
+
 import { toast } from 'react-toastify';
-import { useHistory, useParams } from 'react-router-dom';
 import { Container } from '../../../styles/GlobalStyles';
 import { Form } from './styled';
 import axios from '../../../services/axios';
 
 export default function FormPedido() {
   const history = useHistory();
-  const { id } = useParams();
-  const idNumber = Number(id);
-
-  const [cpf, setCpf] = useState('');
   const [cliente, setCliente] = useState('');
-  const [clienteId, setClienteId] = useState('');
-  const [price, setPrice] = useState('');
-  const [description, setDescription] = useState('');
-  const [status, setStatus] = useState('');
+  const [cpf, setCpf] = useState([]);
+  const [formData, setFormData] = useState({
+    description: '',
+    price: '',
+    status: '',
+    clienteId: '',
+  });
 
-  const filtraClientePorId = async (id) => {
+  const getClienteFromCpf = async (cpfCliente) => {
     try {
       const response = await axios.get('/clientes');
-      console.log(response.data[0]);
-
-      const clientesFiltrados = response.data.filter(
-        (allCliente) => allCliente.id === Number(id)
+      const clienteFiltrado = response.data.filter(
+        (user) => user.cpf === cpfCliente
       );
 
-      console.log('meu filtro', clientesFiltrados);
+      if (clienteFiltrado) {
+        setCliente(clienteFiltrado[0].name);
+
+        setFormData((prevState) => ({
+          ...prevState,
+          clienteId: clienteFiltrado[0].id,
+        }));
+      }
     } catch (err) {
-      console.error('erro ao bsucar clientes:', err);
+      console.log(err.response);
     }
   };
 
-  filtraClientePorId(id);
-
-  const handleChangeCpf = useCallback(async () => {
-    try {
-      if (cpf.length === 11) {
-        const { data } = await axios.get('/clientes');
-        if (!data) {
-          toast.error('Nenhum cliente encontrado');
-        }
-
-        const resultado = data.filter((clienteCpf) => clienteCpf.cpf === cpf);
-        console.log(resultado);
-
-        if (resultado.length > 0) {
-          setCliente(resultado[0].name);
-          setClienteId(resultado[0].id);
-        }
-      } else {
-        setCliente('');
-        setClienteId('');
-      }
-    } catch (err) {
-      if (!cpf) toast.error('Cliente não cadastrado');
-    }
-  }, [cpf]);
-
   const handleSubmit = async (e) => {
     e.preventDefault();
-
     try {
       await axios.post('/orders', {
-        description,
-        price: parseFloat(price),
-        status,
-        clienteId,
+        description: formData.description,
+        price: parseFloat(formData.price),
+        status: formData.status,
+        clienteId: formData.clienteId,
       });
       history.push('/pedidos');
       toast.success('Pedido cadastrado com sucesso');
     } catch (err) {
-      if (!clienteId)
-        toast.error('O pedido deve estar vinculado a algum cliente');
-      console.log('Erro ao cadastrar pedido', err.response);
+      console.log('erro ao cadastrar pedido', err);
     }
+  };
+  const handleChange = async (e) => {
+    const { name, value } = e.target;
+
+    setFormData((prevstate) => ({
+      ...prevstate,
+      [name]: value,
+    }));
   };
 
   useEffect(() => {
-    if (cpf) handleChangeCpf();
-  }, [cpf, handleChangeCpf]);
+    if (cpf.length === 11) {
+      getClienteFromCpf(cpf);
+    } else {
+      setCliente('');
+    }
+  }, [cpf]);
 
   return (
     <Container>
@@ -88,27 +76,24 @@ export default function FormPedido() {
       <Form onSubmit={handleSubmit}>
         <label htmlFor="cliente">
           Cliente
-          <input
-            type="text"
-            value={cliente}
-            onChange={(e) => setCliente(e.target.value)}
-            disabled
-          />
+          <input type="text" value={cliente} disabled />
         </label>
         <label htmlFor="cpf">
           CPF do cliente
           <input
             type="text"
+            name="cpf"
             value={cpf}
             onChange={(e) => setCpf(e.target.value)}
           />
         </label>
-        <label htmlFor="descricao">
+        <label htmlFor="description">
           Descrição:
           <input
             type="text"
-            value={description}
-            onChange={(e) => setDescription(e.target.value)}
+            name="description"
+            value={formData.description}
+            onChange={handleChange}
           />
         </label>
 
@@ -116,8 +101,9 @@ export default function FormPedido() {
           Valor
           <input
             type="text"
-            value={price}
-            onChange={(e) => setPrice(e.target.value)}
+            name="price"
+            value={formData.price}
+            onChange={handleChange}
           />
         </label>
 
@@ -126,8 +112,8 @@ export default function FormPedido() {
           <select
             name="status"
             id="status"
-            value={status}
-            onChange={(e) => setStatus(e.target.value)}
+            value={formData.status}
+            onChange={handleChange}
           >
             <option value="">Selecione uma opção</option>
             <option value="Em andamento">Em andamento</option>
