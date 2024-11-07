@@ -1,15 +1,17 @@
 import React, { useEffect, useState } from 'react';
-import { useHistory } from 'react-router-dom/';
+import { useHistory, useParams } from 'react-router-dom/';
 
 import { toast } from 'react-toastify';
+
 import { Container } from '../../../styles/GlobalStyles';
 import { Form } from './styled';
 import axios from '../../../services/axios';
 
 export default function FormPedido() {
+  const { id } = useParams();
   const history = useHistory();
   const [cliente, setCliente] = useState('');
-  const [cpf, setCpf] = useState([]);
+  const [cpf, setCpf] = useState('');
   const [formData, setFormData] = useState({
     description: '',
     price: '',
@@ -20,17 +22,19 @@ export default function FormPedido() {
   const getClienteFromCpf = async (cpfCliente) => {
     try {
       const response = await axios.get('/clientes');
-      const clienteFiltrado = response.data.filter(
+      const clienteFiltrado = response.data.find(
         (user) => user.cpf === cpfCliente
       );
 
       if (clienteFiltrado) {
-        setCliente(clienteFiltrado[0].name);
-
+        setCliente(clienteFiltrado.name);
         setFormData((prevState) => ({
           ...prevState,
-          clienteId: clienteFiltrado[0].id,
+          clienteId: clienteFiltrado.id,
         }));
+      } else {
+        setCliente('');
+        setFormData((prevState) => ({ ...prevState, clienteId: '' }));
       }
     } catch (err) {
       console.log(err.response);
@@ -39,17 +43,32 @@ export default function FormPedido() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    try {
-      await axios.post('/orders', {
-        description: formData.description,
-        price: parseFloat(formData.price),
-        status: formData.status,
-        clienteId: formData.clienteId,
-      });
-      history.push('/pedidos');
-      toast.success('Pedido cadastrado com sucesso');
-    } catch (err) {
-      console.log('erro ao cadastrar pedido', err);
+    if (id) {
+      try {
+        await axios.put(`/orders/${id}`, {
+          description: formData.description,
+          price: parseFloat(formData.price),
+          status: formData.status,
+          clienteId: formData.clienteId,
+        });
+        history.push('/pedidos');
+        toast.success('Pedido alterado com sucesso');
+      } catch (err) {
+        console.log('erro ao editar o pedido', err);
+      }
+    } else {
+      try {
+        await axios.post('/orders', {
+          description: formData.description,
+          price: parseFloat(formData.price),
+          status: formData.status,
+          clienteId: formData.clienteId,
+        });
+        history.push('/pedidos');
+        toast.success('Pedido cadastrado com sucesso');
+      } catch (err) {
+        console.log('erro ao cadastrar pedido', err);
+      }
     }
   };
   const handleChange = async (e) => {
@@ -61,17 +80,39 @@ export default function FormPedido() {
     }));
   };
 
-  useEffect(() => {
-    if (cpf.length === 11) {
-      getClienteFromCpf(cpf);
-    } else {
-      setCliente('');
+  const loadDadosForm = async () => {
+    try {
+      const orderResponse = await axios.get(`/orders/${id}`);
+      const { pedido } = orderResponse.data;
+
+      setFormData({
+        description: pedido.description,
+        price: pedido.price,
+        status: pedido.status,
+        clienteId: pedido.clienteId,
+      });
+
+      if (pedido.clienteId) {
+        const clienteResponse = await axios.get(
+          `/clientes/${pedido.clienteId}`
+        );
+        setCpf(clienteResponse.data.cpf);
+        setCliente(clienteResponse.data.name);
+      }
+    } catch (error) {
+      console.log('Erro ao carregar dados do pedido:', error);
     }
-  }, [cpf]);
+  };
+
+  useEffect(() => {
+    if (id) {
+      loadDadosForm();
+    }
+  }, [id]);
 
   return (
     <Container>
-      <h1>Novo pedido</h1>
+      {id ? <h1>Editar Pedido </h1> : <h1>Novo pedido</h1>}
 
       <Form onSubmit={handleSubmit}>
         <label htmlFor="cliente">

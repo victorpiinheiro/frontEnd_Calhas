@@ -25,7 +25,6 @@ export default function Orders() {
     async function getPedidos() {
       try {
         const response = await axios.get('/orders');
-        console.log(pedidos);
         setPedidos(response.data);
       } catch (err) {
         console.log(err.response);
@@ -66,7 +65,7 @@ export default function Orders() {
               <td>{pedido.status}</td>
               <td>{pedido.price}</td>
               <td>
-                <Link to={`/pedidos/edit/${pedido.clienteId}`}>
+                <Link to={`/pedidos/edit/${pedido.id}`}>
                   <FaEdit />
                 </Link>
               </td>
