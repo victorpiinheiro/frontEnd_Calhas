@@ -12,6 +12,7 @@ export default function FormPedido() {
   const history = useHistory();
   const [cliente, setCliente] = useState('');
   const [cpf, setCpf] = useState('');
+  const [startCadastro, setStartCadastro] = useState(false);
   const [formData, setFormData] = useState({
     description: '',
     price: '',
@@ -36,6 +37,8 @@ export default function FormPedido() {
         setCliente('');
         setFormData((prevState) => ({ ...prevState, clienteId: '' }));
       }
+
+      setStartCadastro(false);
     } catch (err) {
       console.log(err.response);
     }
@@ -107,8 +110,13 @@ export default function FormPedido() {
   useEffect(() => {
     if (id) {
       loadDadosForm();
+    } else if (cpf.length === 11 && startCadastro) {
+      getClienteFromCpf(cpf);
+    } else if (cpf.length < 11) {
+      setCliente('');
+      setFormData((prevState) => ({ ...prevState, clienteId: '' }));
     }
-  }, [id]);
+  }, [id, cpf, startCadastro]);
 
   return (
     <Container>
@@ -125,7 +133,10 @@ export default function FormPedido() {
             type="text"
             name="cpf"
             value={cpf}
-            onChange={(e) => setCpf(e.target.value)}
+            onChange={(e) => {
+              setCpf(e.target.value);
+              setStartCadastro(true);
+            }}
           />
         </label>
         <label htmlFor="description">
@@ -163,7 +174,7 @@ export default function FormPedido() {
           </select>
         </label>
 
-        <button type="submit">Cadastrar</button>
+        <button type="submit">{id ? 'Editar' : 'Cadastrar '}</button>
       </Form>
     </Container>
   );

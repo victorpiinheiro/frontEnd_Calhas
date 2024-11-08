@@ -35,7 +35,7 @@ export default function Login() {
       localStorage.setItem('User', formValues.email);
 
       dispath(loginRequest({ email: formValues.email }));
-      history.push('/home');
+      history.push('/');
 
       toast.success('Usuario logado com sucesso');
     } catch (err) {

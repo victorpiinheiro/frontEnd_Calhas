@@ -34,18 +34,10 @@ export default function Header() {
         </>
       ) : (
         <>
-          <Link to="/pedidos">
-            <FaHome size={24} />
-          </Link>
-          <Link to="/">
-            <FaHome size={24} />
-          </Link>
-          <Link to="/clientes">
-            <FaUserAlt size={24} />
-          </Link>
-          <Link to="/funcionarios">
-            <FaUsers size={24} />
-          </Link>
+          <Link to="/">Home</Link>
+          <Link to="/pedidos">Pedidos</Link>
+          <Link to="/clientes">Clientes</Link>
+          <Link to="/funcionarios">Funcionarios</Link>
           <Link to="/login">
             <FaSignInAlt size={24} onClick={handleLogout} />
           </Link>

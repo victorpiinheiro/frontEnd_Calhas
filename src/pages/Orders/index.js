@@ -27,10 +27,7 @@ export default function Orders() {
         const response = await axios.get('/orders');
         setPedidos(response.data);
       } catch (err) {
-        console.log(err.response);
-        if (err.response.status === 401) {
-          toast.error(err.response.data.error);
-        }
+        console.log('Nenhum pedido encontardo', err.response);
       }
     }
     getPedidos();

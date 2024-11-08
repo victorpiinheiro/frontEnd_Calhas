@@ -1,6 +1,7 @@
 import styled, { createGlobalStyle } from 'styled-components';
 import * as colors from '../config/colors';
 import 'react-toastify/dist/ReactToastify.css';
+import fundo from '../images/background/calhas-backgroud.webp';
 
 export default createGlobalStyle`
   * {
@@ -12,8 +13,11 @@ export default createGlobalStyle`
 
   body {
     font-family: sans-serif;
-    background: ${colors.primaryDarkColor};
+
     color: ${colors.textoColor};
+    background-image: url(${fundo});
+    background-size: cover;
+    background-position: center;
   }
 
   html, body, #root {
@@ -57,4 +61,5 @@ export const Container = styled.section`
   padding: 30px;
   border-radius: 4px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  opacity: 0.91;
 `;
