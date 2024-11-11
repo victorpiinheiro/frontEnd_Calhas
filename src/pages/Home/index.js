@@ -1,19 +1,24 @@
-import React, { useState } from 'react';
+import React from 'react';
 
 // styles
 import { useSelector } from 'react-redux';
-import { Container } from './styled';
+import { Container, ContainerCard } from './styled';
 
 // componentes
-import DashCliente from '../dashboard/cliente/dashCliente';
+import DashCliente from '../dashboard/DashCliente/DashCliente';
+import DashFuncionario from '../dashboard/DashFuncionarios/DashFuncionarios';
+import DashPedidos from '../dashboard/DashPedidos/DashPedidos';
 
 export default function Home() {
   const user = useSelector((state) => state.user.currentUser.email);
 
   return (
     <Container>
-      <h1>Olá {user}</h1>
-      <DashCliente />
+      <ContainerCard>
+        <DashCliente />
+        <DashFuncionario />
+        <DashPedidos />
+      </ContainerCard>
     </Container>
   );
 }

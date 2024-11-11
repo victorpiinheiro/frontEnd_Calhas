@@ -1,7 +1,7 @@
 import styled, { createGlobalStyle } from 'styled-components';
 import * as colors from '../config/colors';
 import 'react-toastify/dist/ReactToastify.css';
-import fundo from '../images/background/calhas-backgroud.webp';
+import fundo from '../config/images/background/calhas-backgroud.webp';
 
 export default createGlobalStyle`
   * {

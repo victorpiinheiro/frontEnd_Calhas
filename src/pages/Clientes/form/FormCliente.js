@@ -18,11 +18,11 @@ export default function FormCliente() {
   async function loadClient() {
     try {
       const { data } = await axios.get(`/clientes/${id}`);
-      setName(data.user.name);
-      setAdress(data.user.adress);
-      setPhone(data.user.phone);
-      setEmail(data.user.email);
-      setCpf(data.user.cpf);
+      setName(data.name);
+      setAdress(data.adress);
+      setPhone(data.phone);
+      setEmail(data.email);
+      setCpf(data.cpf);
     } catch (err) {
       console.log(err);
     }
@@ -37,7 +37,7 @@ export default function FormCliente() {
 
   async function handleSubmit(e) {
     e.preventDefault();
-
+    if (cpf.length !== 11) toast.error('cpf invalido');
     if (id) {
       try {
         await axios.put(`/clientes/${id}`, {
@@ -65,7 +65,6 @@ export default function FormCliente() {
         history.push('/clientes');
       } catch (err) {
         toast.error('erro ao tentar cadastrar');
-        console.log(err);
       }
     }
   }

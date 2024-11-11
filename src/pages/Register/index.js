@@ -29,6 +29,9 @@ export default function Register() {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
+    if (!formData.name || !formData.email) {
+      return toast.error('Há algum campo vazio');
+    }
     if (formData.password !== formData.confirmPass) {
       return toast.error('As senhas precisam ser iguais');
     }
@@ -43,11 +46,8 @@ export default function Register() {
       toast.success('Cadastro realizado com sucesso');
       history.push('/login');
     } catch (err) {
-      if (err.response.status === 409) {
-        toast.error('Email ja cadastrado');
-      } else if (err.response.status === 400) {
-        toast.error('Email invalida');
-      }
+      toast.error('erro ao tentar logar', err.responnse);
+      console.log('seu erro:', err.response);
     }
   };
 

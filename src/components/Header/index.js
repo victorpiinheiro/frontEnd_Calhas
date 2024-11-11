@@ -25,7 +25,7 @@ export default function Header() {
   }
   return (
     <Nav>
-      <Card>Calhas Rafael</Card>
+      <Card>Calhas </Card>
       {!user ? (
         <>
           <Link to="/login">

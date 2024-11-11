@@ -132,21 +132,32 @@ export default function FormFuncionarios() {
         </label>
         <label htmlFor="departamento">
           Departamento:
-          <input
-            type="text"
+          <select
             name="departamento"
+            id="departamento"
             value={formData.departamento}
             onChange={handleChange}
-          />
+          >
+            <option value="">Selecione uma opção</option>
+            <option value="RH">Recursos Humanos</option>
+            <option value="comercial">Comercial</option>
+            <option value="obra">Obras</option>
+          </select>
         </label>
         <label htmlFor="position">
-          Cargo:
-          <input
-            type="text"
+          Cargo
+          <select
             name="position"
+            id="position"
             value={formData.position}
             onChange={handleChange}
-          />
+          >
+            <option value="">Selecione uma opção</option>
+            <option value="recepcionista">Recepcionista</option>
+            <option value="ajudante">Ajudante</option>
+            <option value="vendedor">Vendedor</option>
+            <option value="instalador">Instalador</option>
+          </select>
         </label>
         <label htmlFor="salary">
           salario:
@@ -183,8 +194,11 @@ export default function FormFuncionarios() {
             value={formData.status}
             onChange={handleChange}
           >
+            <option value="">Clique para escolher</option>
             <option value="ativo">Ativo</option>
-            <option value="inativo">Inativo</option>
+            <option value="ferias">Ferias</option>
+            <option value="licenca">Licença</option>
+            <option value="demitido">Demititdo</option>
           </select>
         </label>
         <label htmlFor="observacoes">

@@ -52,9 +52,13 @@ export default function DashCliente() {
           </span>{' '}
         </h1>
 
-        <h3>total de clientes: {totalCliente}</h3>
-        <h3>Novos Clientes(Ultimos 7 dias): {novosClientes} </h3>
-        <Link to="/clientes/cadastrar">cadastrar novo cliente</Link>
+        <h3>
+          Total de Clientes: <span>{totalCliente}</span>
+        </h3>
+        <h3>
+          Novos Clientes(Ultimos 7 dias): <span>{novosClientes}</span>
+        </h3>
+        <Link to="/clientes/cadastrar"> novo cliente</Link>
       </Card>
     </ContainerCard>
   );
