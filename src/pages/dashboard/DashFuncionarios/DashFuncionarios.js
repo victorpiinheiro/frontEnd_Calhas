@@ -67,7 +67,7 @@ export default function DashFuncionario() {
           Demissão (ultimos 30 dias): <span>{demissoes}</span>
         </h3>
 
-        <Link to="/clientes/cadastrar">Novo Colaborador</Link>
+        <Link to="/funcionarios/cadastrar">Novo Colaborador</Link>
       </Card>
     </ContainerCard>
   );

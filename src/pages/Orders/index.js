@@ -33,6 +33,13 @@ export default function Orders() {
     getPedidos();
   }, []);
 
+  const formatPrice = (price) => {
+    return price.toLocaleString('pt-br', {
+      style: 'currency',
+      currency: 'BRL',
+    });
+  };
+
   return (
     <Container>
       <h1>Pedidos</h1>
@@ -60,7 +67,7 @@ export default function Orders() {
               <td>{pedido.description}</td>
               <td>{pedido.dataPedido}</td>
               <td>{pedido.status}</td>
-              <td>{pedido.price}</td>
+              <td>{formatPrice(pedido.price)}</td>
               <td>
                 <Link to={`/pedidos/edit/${pedido.id}`}>
                   <FaEdit />

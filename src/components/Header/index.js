@@ -25,7 +25,7 @@ export default function Header() {
   }
   return (
     <Nav>
-      <Card>Calhas </Card>
+      <Card>DV SERVIÇOS </Card>
       {!user ? (
         <>
           <Link to="/login">
@@ -35,9 +35,9 @@ export default function Header() {
       ) : (
         <>
           <Link to="/">Home</Link>
-          <Link to="/pedidos">Pedidos</Link>
           <Link to="/clientes">Clientes</Link>
           <Link to="/funcionarios">Funcionarios</Link>
+          <Link to="/pedidos">Pedidos</Link>
           <Link to="/login">
             <FaSignInAlt size={24} onClick={handleLogout} />
           </Link>

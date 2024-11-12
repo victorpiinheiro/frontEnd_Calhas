@@ -168,9 +168,9 @@ export default function FormPedido() {
             onChange={handleChange}
           >
             <option value="">Selecione uma opção</option>
-            <option value="Em andamento">Em andamento</option>
-            <option value="Concluído">Concluído</option>
-            <option value="Cancelado">Cancelado</option>
+            <option value="em andamento">Em andamento</option>
+            <option value="concluido">Concluído</option>
+            <option value="cancelado">Cancelado</option>
           </select>
         </label>
 
